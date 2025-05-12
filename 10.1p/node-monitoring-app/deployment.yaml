@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-monitoring-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-monitoring-app
+  template:
+    metadata:
+      labels:
+        app: node-monitoring-app
+    spec:
+      containers:
+      - name: node-monitoring-app
+        image: lotsofpesos/node-monitoring-app:v1
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-monitoring-app-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: node-monitoring-app
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
